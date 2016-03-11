@@ -1,13 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"github.com/veandco/go-sdl2/sdl"
 )
 
 type ship struct {
-	isDestroyed bool
-	rect        *sdl.Rect
+	isDestroyed  bool
+	rect         *sdl.Rect
+	shotVelocity *sdl.Point
 }
 
 func (s *ship) move(position *sdl.Point) {
@@ -16,9 +16,13 @@ func (s *ship) move(position *sdl.Point) {
 }
 
 func (s *ship) fire() *shot {
-	fmt.Println("Fire!!!!!!!!!!")
 	return &shot{
-		rect:     &sdl.Rect{X: s.rect.X, Y: s.rect.Y, W: 10, H: 10},
-		velocity: &sdl.Point{X: 0, Y: 1},
+		rect: &sdl.Rect{
+			X: s.rect.X + s.rect.W/2,
+			Y: s.rect.Y,
+			W: 10,
+			H: 10,
+		},
+		velocity: s.shotVelocity,
 	}
 }
