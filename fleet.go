@@ -41,7 +41,9 @@ func (f *fleet) IsDestroyed() bool {
 func (f *fleet) Rects() []sdl.Rect {
 	var rects []sdl.Rect
 	for _, s := range f.ships {
-		rects = append(rects, s.rect)
+		if !s.isDestroyed {
+			rects = append(rects, s.rect)
+		}
 	}
 	return rects
 }
@@ -64,6 +66,19 @@ func (f *fleet) Update() {
 }
 
 func (f *fleet) Intersects(g gameObject) {
+	if g.Type() != gameObjectTypeShot {
+		return
+	}
+
+	for _, r := range g.Rects() {
+		for _, s := range f.ships {
+			if !s.isDestroyed {
+				if _, collided := s.rect.Intersect(&r); collided {
+					s.isDestroyed = true
+				}
+			}
+		}
+	}
 }
 
 func (f *fleet) fire() *shot {

@@ -28,6 +28,11 @@ func (s *shot) Update() {
 }
 
 func (s *shot) Intersects(g gameObject) {
+	for _, r := range g.Rects() {
+		if _, collided := s.rect.Intersect(&r); collided {
+			s.isDestroyed = true
+		}
+	}
 }
 
 func (s *shot) move(position *sdl.Point) {
