@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/veandco/go-sdl2/sdl"
 	"os"
+	"time"
 )
 
 func main() {
@@ -33,7 +34,7 @@ func gameLoop() error {
 	}
 	defer renderer.Destroy()
 
-	eventChan := make(chan sdl.Event)
+	eventChan := make(chan sdl.Event, 1024)
 	go func() {
 		for {
 			if event := sdl.PollEvent(); event != nil {
@@ -42,16 +43,27 @@ func gameLoop() error {
 		}
 	}()
 
+	ticker := time.Tick(time.Second / 60)
+	myShip := &ship{
+		rect: &sdl.Rect{X: 100, Y: 100, W: 100, H: 100},
+	}
+
 loop:
 	for {
 		select {
+		default:
+		case <-ticker:
+			renderer.SetDrawColor(0, 0, 0, 255)
+			renderer.Clear()
+			renderer.SetDrawColor(255, 255, 255, 255)
+			renderer.FillRect(myShip.rect)
+			renderer.Present()
 		case event := <-eventChan:
 			switch t := event.(type) {
 			case *sdl.QuitEvent:
 				break loop
 			case *sdl.MouseMotionEvent:
-				fmt.Printf("[%d ms] MouseMotion\ttype:%d\tid:%d\tx:%d\ty:%d\txrel:%d\tyrel:%d\n",
-					t.Timestamp, t.Type, t.Which, t.X, t.Y, t.XRel, t.YRel)
+				myShip.move(&sdl.Point{X: t.X, Y: myShip.rect.Y})
 			case *sdl.MouseButtonEvent:
 				fmt.Printf("[%d ms] MouseButton\ttype:%d\tid:%d\tx:%d\ty:%d\tbutton:%d\tstate:%d\n",
 					t.Timestamp, t.Type, t.Which, t.X, t.Y, t.Button, t.State)
