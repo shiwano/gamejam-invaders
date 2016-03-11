@@ -34,15 +34,6 @@ func gameLoop() error {
 	}
 	defer renderer.Destroy()
 
-	eventChan := make(chan sdl.Event, 1024)
-	go func() {
-		for {
-			if event := sdl.PollEvent(); event != nil {
-				eventChan <- event
-			}
-		}
-	}()
-
 	ticker := time.Tick(time.Second / 60)
 	myShip := &ship{
 		rect: &sdl.Rect{X: 100, Y: 100, W: 100, H: 100},
@@ -58,15 +49,17 @@ loop:
 			renderer.SetDrawColor(255, 255, 255, 255)
 			renderer.FillRect(myShip.rect)
 			renderer.Present()
-		case event := <-eventChan:
-			switch t := event.(type) {
-			case *sdl.QuitEvent:
-				break loop
-			case *sdl.MouseMotionEvent:
-				myShip.move(&sdl.Point{X: t.X, Y: myShip.rect.Y})
-			case *sdl.MouseButtonEvent:
-				fmt.Printf("[%d ms] MouseButton\ttype:%d\tid:%d\tx:%d\ty:%d\tbutton:%d\tstate:%d\n",
-					t.Timestamp, t.Type, t.Which, t.X, t.Y, t.Button, t.State)
+
+			for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
+				switch t := event.(type) {
+				case *sdl.QuitEvent:
+					break loop
+				case *sdl.MouseMotionEvent:
+					myShip.move(&sdl.Point{X: t.X, Y: myShip.rect.Y})
+				case *sdl.MouseButtonEvent:
+					fmt.Printf("[%d ms] MouseButton\ttype:%d\tid:%d\tx:%d\ty:%d\tbutton:%d\tstate:%d\n",
+						t.Timestamp, t.Type, t.Which, t.X, t.Y, t.Button, t.State)
+				}
 			}
 		}
 	}
