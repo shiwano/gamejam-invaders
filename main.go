@@ -70,15 +70,22 @@ loop:
 
 			for _, g := range gameObjects {
 				g.Update()
+				renderer.FillRects(g.Rects())
+			}
+			for _, g := range gameObjects {
 				for _, other := range gameObjects {
 					if g != other {
 						g.Intersects(other)
 					}
 				}
+			}
+			var aliveGameObjects []gameObject
+			for _, g := range gameObjects {
 				if !g.IsDestroyed() {
-					renderer.FillRects(g.Rects())
+					aliveGameObjects = append(aliveGameObjects, g)
 				}
 			}
+			gameObjects = aliveGameObjects
 			renderer.Present()
 
 			for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {

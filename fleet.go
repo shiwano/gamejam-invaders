@@ -41,14 +41,20 @@ func (f *fleet) IsDestroyed() bool {
 func (f *fleet) Rects() []sdl.Rect {
 	var rects []sdl.Rect
 	for _, s := range f.ships {
-		if !s.isDestroyed {
-			rects = append(rects, s.rect)
-		}
+		rects = append(rects, s.rect)
 	}
 	return rects
 }
 
 func (f *fleet) Update() {
+	var aliveShips []*ship
+	for _, s := range f.ships {
+		if !s.isDestroyed {
+			aliveShips = append(aliveShips, s)
+		}
+	}
+	f.ships = aliveShips
+
 	var fleetRect sdl.Rect
 	for _, s := range f.ships {
 		s.move(&sdl.Point{X: s.rect.X + f.horizontalSpeed, Y: s.rect.Y})
