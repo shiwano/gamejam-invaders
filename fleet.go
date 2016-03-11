@@ -6,16 +6,15 @@ import (
 
 type fleet struct {
 	ships           []*ship
-	rect            *sdl.Rect
 	horizontalSpeed int32
 }
 
 func newFleet(positionY int32) *fleet {
 	var ships []*ship
 	for i := 0; i < 10; i++ {
-		positionX := int32(i * 60)
+		positionX := int32(i * 50)
 		s := &ship{
-			rect:         sdl.Rect{X: positionX, Y: positionY, W: 50, H: 50},
+			rect:         sdl.Rect{X: positionX, Y: positionY, W: 30, H: 30},
 			shotVelocity: sdl.Point{X: 0, Y: 10},
 		}
 		ships = append(ships, s)
@@ -44,8 +43,19 @@ func (f *fleet) Rects() []sdl.Rect {
 }
 
 func (f *fleet) Update() {
+	var fleetRect sdl.Rect
 	for _, s := range f.ships {
 		s.move(&sdl.Point{X: s.rect.X + f.horizontalSpeed, Y: s.rect.Y})
+		fleetRect = fleetRect.Union(&s.rect)
+	}
+
+	if (f.horizontalSpeed > 0 && fleetRect.X+fleetRect.W >= windowWidth) ||
+		(f.horizontalSpeed < 0 && fleetRect.X <= 0) {
+		f.horizontalSpeed = -f.horizontalSpeed
+
+		for _, s := range f.ships {
+			s.move(&sdl.Point{X: s.rect.X, Y: s.rect.Y + 30})
+		}
 	}
 }
 
