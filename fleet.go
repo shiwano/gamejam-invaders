@@ -15,8 +15,8 @@ func newFleet(positionY int32) *fleet {
 	for i := 0; i < 10; i++ {
 		positionX := int32(i * 60)
 		s := &ship{
-			rect:         &sdl.Rect{X: positionX, Y: positionY, W: 50, H: 50},
-			shotVelocity: &sdl.Point{X: 0, Y: 10},
+			rect:         sdl.Rect{X: positionX, Y: positionY, W: 50, H: 50},
+			shotVelocity: sdl.Point{X: 0, Y: 10},
 		}
 		ships = append(ships, s)
 	}
@@ -35,8 +35,12 @@ func (f *fleet) IsDestroyed() bool {
 	return true
 }
 
-func (f *fleet) Rect() *sdl.Rect {
-	return f.rect
+func (f *fleet) Rects() []sdl.Rect {
+	var rects []sdl.Rect
+	for _, s := range f.ships {
+		rects = append(rects, s.rect)
+	}
+	return rects
 }
 
 func (f *fleet) Update() {

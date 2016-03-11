@@ -6,16 +6,16 @@ import (
 
 type shot struct {
 	isDestroyed bool
-	rect        *sdl.Rect
-	velocity    *sdl.Point
+	rect        sdl.Rect
+	velocity    sdl.Point
 }
 
 func (s *shot) IsDestroyed() bool {
 	return s.isDestroyed
 }
 
-func (s *shot) Rect() *sdl.Rect {
-	return s.rect
+func (s *shot) Rects() []sdl.Rect {
+	return []sdl.Rect{s.rect}
 }
 
 func (s *shot) Update() {

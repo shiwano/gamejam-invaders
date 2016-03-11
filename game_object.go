@@ -6,6 +6,6 @@ import (
 
 type gameObject interface {
 	IsDestroyed() bool
-	Rect() *sdl.Rect
+	Rects() []sdl.Rect
 	Update()
 }

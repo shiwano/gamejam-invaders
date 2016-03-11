@@ -7,16 +7,16 @@ import (
 type ship struct {
 	isDestroyed  bool
 	isPlayer     bool
-	rect         *sdl.Rect
-	shotVelocity *sdl.Point
+	rect         sdl.Rect
+	shotVelocity sdl.Point
 }
 
 func (s *ship) IsDestroyed() bool {
 	return s.isDestroyed
 }
 
-func (s *ship) Rect() *sdl.Rect {
-	return s.rect
+func (s *ship) Rects() []sdl.Rect {
+	return []sdl.Rect{s.rect}
 }
 
 func (s *ship) Update() {
@@ -29,7 +29,7 @@ func (s *ship) move(position *sdl.Point) {
 
 func (s *ship) fire() *shot {
 	return &shot{
-		rect: &sdl.Rect{
+		rect: sdl.Rect{
 			X: s.rect.X + s.rect.W/2,
 			Y: s.rect.Y,
 			W: 10,

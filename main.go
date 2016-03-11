@@ -47,8 +47,8 @@ func gameLoop() error {
 	ticker := time.Tick(time.Second / 60)
 	myShip := &ship{
 		isPlayer:     true,
-		rect:         &sdl.Rect{X: 100, Y: windowHeight - 50, W: 50, H: 50},
-		shotVelocity: &sdl.Point{X: 0, Y: -10},
+		rect:         sdl.Rect{X: 100, Y: windowHeight - 50, W: 50, H: 50},
+		shotVelocity: sdl.Point{X: 0, Y: -10},
 	}
 
 	gameObjects := []gameObject{myShip}
@@ -66,11 +66,10 @@ loop:
 			renderer.SetDrawColor(0, 0, 0, 255)
 			renderer.Clear()
 			renderer.SetDrawColor(255, 255, 255, 255)
-			renderer.FillRect(myShip.rect)
 
 			for _, g := range gameObjects {
 				g.Update()
-				renderer.FillRect(g.Rect())
+				renderer.FillRects(g.Rects())
 			}
 
 			renderer.Present()
