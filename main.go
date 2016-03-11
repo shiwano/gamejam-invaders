@@ -50,7 +50,13 @@ func gameLoop() error {
 		rect:         &sdl.Rect{X: 100, Y: windowHeight - 50, W: 50, H: 50},
 		shotVelocity: &sdl.Point{X: 0, Y: -10},
 	}
+
 	gameObjects := []gameObject{myShip}
+	for i := 0; i < 4; i++ {
+		positionY := int32(i * 60)
+		f := newFleet(positionY)
+		gameObjects = append(gameObjects, f)
+	}
 
 loop:
 	for {
