@@ -6,6 +6,7 @@ import (
 
 type ship struct {
 	isDestroyed  bool
+	isPlayer     bool
 	rect         *sdl.Rect
 	shotVelocity *sdl.Point
 }

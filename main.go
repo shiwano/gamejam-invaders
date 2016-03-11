@@ -46,6 +46,7 @@ func gameLoop() error {
 
 	ticker := time.Tick(time.Second / 60)
 	myShip := &ship{
+		isPlayer:     true,
 		rect:         &sdl.Rect{X: 100, Y: windowHeight - 50, W: 50, H: 50},
 		shotVelocity: &sdl.Point{X: 0, Y: -10},
 	}
