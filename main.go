@@ -4,8 +4,13 @@ import (
 	"fmt"
 	"github.com/veandco/go-sdl2/sdl"
 	"os"
+	"runtime"
 	"time"
 )
+
+func init() {
+	runtime.LockOSThread()
+}
 
 func main() {
 	if err := gameLoop(); err != nil {
@@ -55,6 +60,8 @@ loop:
 				case *sdl.QuitEvent:
 					break loop
 				case *sdl.MouseMotionEvent:
+					fmt.Printf("[%d ms] MouseMotion\ttype:%d\tid:%d\tx:%d\ty:%d\txrel:%d\tyrel:%d\n",
+						t.Timestamp, t.Type, t.Which, t.X, t.Y, t.XRel, t.YRel)
 					myShip.move(&sdl.Point{X: t.X, Y: myShip.rect.Y})
 				case *sdl.MouseButtonEvent:
 					fmt.Printf("[%d ms] MouseButton\ttype:%d\tid:%d\tx:%d\ty:%d\tbutton:%d\tstate:%d\n",
