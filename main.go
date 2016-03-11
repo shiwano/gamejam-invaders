@@ -7,7 +7,13 @@ import (
 )
 
 func main() {
+	gameLoop()
+	os.Exit(0)
+}
+
+func gameLoop() {
 	sdl.Init(sdl.INIT_EVERYTHING)
+	defer sdl.Quit()
 
 	window, err := sdl.CreateWindow("test", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
 		800, 600, sdl.WINDOW_SHOWN)
@@ -41,8 +47,4 @@ loop:
 			}
 		}
 	}
-
-	sdl.Delay(1000)
-	sdl.Quit()
-	os.Exit(0)
 }
