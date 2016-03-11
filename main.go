@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/veandco/go-sdl2/sdl"
+	"os"
 )
 
 func main() {
@@ -16,4 +17,5 @@ func main() {
 
 	sdl.Delay(1000)
 	sdl.Quit()
+	os.Exit(0)
 }
