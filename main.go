@@ -51,7 +51,7 @@ func gameLoop() error {
 		shotVelocity: sdl.Point{X: 0, Y: -10},
 	}
 
-	gameObjects := []gameObject{myShip}
+	var gameObjects []gameObject
 	for i := 0; i < 4; i++ {
 		positionY := int32(i * 60)
 		f := newFleet(positionY)
@@ -66,12 +66,12 @@ loop:
 			renderer.SetDrawColor(0, 0, 0, 255)
 			renderer.Clear()
 			renderer.SetDrawColor(255, 255, 255, 255)
+			renderer.FillRect(&myShip.rect)
 
 			for _, g := range gameObjects {
 				g.Update()
 				renderer.FillRects(g.Rects())
 			}
-
 			renderer.Present()
 
 			for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
