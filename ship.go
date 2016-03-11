@@ -10,6 +10,17 @@ type ship struct {
 	shotVelocity *sdl.Point
 }
 
+func (s *ship) IsDestroyed() bool {
+	return s.isDestroyed
+}
+
+func (s *ship) Rect() *sdl.Rect {
+	return s.rect
+}
+
+func (s *ship) Update() {
+}
+
 func (s *ship) move(position *sdl.Point) {
 	s.rect.X = position.X
 	s.rect.Y = position.Y

@@ -45,7 +45,7 @@ func gameLoop() error {
 	defer renderer.Destroy()
 
 	ticker := time.Tick(time.Second / 60)
-	var shots []*shot
+	var gameObjects []gameObject
 	myShip := &ship{
 		rect:         &sdl.Rect{X: 100, Y: windowHeight - 50, W: 50, H: 50},
 		shotVelocity: &sdl.Point{X: 0, Y: -10},
@@ -61,9 +61,9 @@ loop:
 			renderer.SetDrawColor(255, 255, 255, 255)
 			renderer.FillRect(myShip.rect)
 
-			for _, shot := range shots {
-				shot.update()
-				renderer.FillRect(shot.rect)
+			for _, g := range gameObjects {
+				g.Update()
+				renderer.FillRect(g.Rect())
 			}
 
 			renderer.Present()
@@ -77,7 +77,7 @@ loop:
 				case *sdl.MouseButtonEvent:
 					if t.State == 0 {
 						shot := myShip.fire()
-						shots = append(shots, shot)
+						gameObjects = append(gameObjects, shot)
 					}
 				}
 			}
