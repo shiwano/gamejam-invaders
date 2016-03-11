@@ -67,8 +67,9 @@ loop:
 				case *sdl.MouseMotionEvent:
 					myShip.move(&sdl.Point{X: t.X - 25, Y: myShip.rect.Y})
 				case *sdl.MouseButtonEvent:
-					fmt.Printf("[%d ms] MouseButton\ttype:%d\tid:%d\tx:%d\ty:%d\tbutton:%d\tstate:%d\n",
-						t.Timestamp, t.Type, t.Which, t.X, t.Y, t.Button, t.State)
+					if t.State == 0 {
+						myShip.fire()
+					}
 				}
 			}
 		}
