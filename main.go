@@ -70,7 +70,14 @@ loop:
 
 			for _, g := range gameObjects {
 				g.Update()
-				renderer.FillRects(g.Rects())
+				for _, other := range gameObjects {
+					if g != other {
+						g.Intersects(other)
+					}
+				}
+				if !g.IsDestroyed() {
+					renderer.FillRects(g.Rects())
+				}
 			}
 			renderer.Present()
 
