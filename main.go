@@ -88,6 +88,15 @@ loop:
 			gameObjects = aliveGameObjects
 			renderer.Present()
 
+			for _, g := range gameObjects {
+				if g.Type() == gameObjectTypeFleet {
+					r := g.Rects()[0]
+					if r.Y+r.H > windowHeight {
+						break loop
+					}
+				}
+			}
+
 			for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
 				switch t := event.(type) {
 				case *sdl.QuitEvent:
