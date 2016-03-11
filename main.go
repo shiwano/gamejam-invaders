@@ -8,6 +8,11 @@ import (
 	"time"
 )
 
+const (
+	windowWidth  = 600
+	windowHeight = 800
+)
+
 func init() {
 	runtime.LockOSThread()
 }
@@ -26,7 +31,7 @@ func gameLoop() error {
 	defer sdl.Quit()
 
 	window, err := sdl.CreateWindow("test", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
-		800, 600, sdl.WINDOW_SHOWN)
+		windowWidth, windowHeight, sdl.WINDOW_SHOWN)
 	if err != nil {
 		return err
 	}
@@ -41,7 +46,7 @@ func gameLoop() error {
 
 	ticker := time.Tick(time.Second / 60)
 	myShip := &ship{
-		rect: &sdl.Rect{X: 100, Y: 100, W: 100, H: 100},
+		rect: &sdl.Rect{X: 100, Y: windowHeight - 50, W: 50, H: 50},
 	}
 
 loop:
@@ -60,8 +65,6 @@ loop:
 				case *sdl.QuitEvent:
 					break loop
 				case *sdl.MouseMotionEvent:
-					fmt.Printf("[%d ms] MouseMotion\ttype:%d\tid:%d\tx:%d\ty:%d\txrel:%d\tyrel:%d\n",
-						t.Timestamp, t.Type, t.Which, t.X, t.Y, t.XRel, t.YRel)
 					myShip.move(&sdl.Point{X: t.X, Y: myShip.rect.Y})
 				case *sdl.MouseButtonEvent:
 					fmt.Printf("[%d ms] MouseButton\ttype:%d\tid:%d\tx:%d\ty:%d\tbutton:%d\tstate:%d\n",
