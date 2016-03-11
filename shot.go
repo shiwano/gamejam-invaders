@@ -27,6 +27,9 @@ func (s *shot) Update() {
 	s.rect.Y += s.velocity.Y
 }
 
+func (s *shot) Intersects(g gameObject) {
+}
+
 func (s *shot) move(position *sdl.Point) {
 	s.rect.X = position.X
 	s.rect.Y = position.Y

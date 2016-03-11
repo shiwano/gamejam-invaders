@@ -63,6 +63,9 @@ func (f *fleet) Update() {
 	}
 }
 
+func (f *fleet) Intersects(g gameObject) {
+}
+
 func (f *fleet) fire() *shot {
 	return nil
 }

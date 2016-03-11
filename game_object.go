@@ -16,4 +16,5 @@ type gameObject interface {
 	IsDestroyed() bool
 	Rects() []sdl.Rect
 	Update()
+	Intersects(g gameObject)
 }
