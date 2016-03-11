@@ -7,20 +7,31 @@ import (
 )
 
 func main() {
-	gameLoop()
-	os.Exit(0)
+	if err := gameLoop(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	} else {
+		os.Exit(0)
+	}
 }
 
-func gameLoop() {
+func gameLoop() error {
 	sdl.Init(sdl.INIT_EVERYTHING)
 	defer sdl.Quit()
 
 	window, err := sdl.CreateWindow("test", sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED,
 		800, 600, sdl.WINDOW_SHOWN)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	defer window.Destroy()
+
+	renderer, err := sdl.CreateRenderer(window, -1, sdl.RENDERER_ACCELERATED)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to create renderer: %s\n", err)
+		return err
+	}
+	defer renderer.Destroy()
 
 	eventChan := make(chan sdl.Event)
 	go func() {
@@ -47,4 +58,5 @@ loop:
 			}
 		}
 	}
+	return nil
 }
