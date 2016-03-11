@@ -25,6 +25,10 @@ func newFleet(positionY int32) *fleet {
 	}
 }
 
+func (f *fleet) Type() gameObjectType {
+	return gameObjectTypeFleet
+}
+
 func (f *fleet) IsDestroyed() bool {
 	for _, s := range f.ships {
 		if !s.isDestroyed {

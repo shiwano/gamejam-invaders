@@ -10,6 +10,10 @@ type shot struct {
 	velocity    sdl.Point
 }
 
+func (s *shot) Type() gameObjectType {
+	return gameObjectTypeShot
+}
+
 func (s *shot) IsDestroyed() bool {
 	return s.isDestroyed
 }
