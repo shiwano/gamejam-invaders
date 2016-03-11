@@ -88,13 +88,20 @@ loop:
 			gameObjects = aliveGameObjects
 			renderer.Present()
 
+			cleared := true
 			for _, g := range gameObjects {
 				if g.Type() == gameObjectTypeFleet {
+					cleared = false
 					r := g.Rects()[0]
 					if r.Y+r.H > windowHeight {
+						fmt.Println("Game over!")
 						break loop
 					}
 				}
+			}
+			if cleared {
+				fmt.Println("Game cleared!")
+				break loop
 			}
 
 			for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
